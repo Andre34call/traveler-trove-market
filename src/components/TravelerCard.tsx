@@ -1,7 +1,9 @@
 import { Star, MapPin, Calendar, ShoppingBag, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface TravelerCardProps {
+  id: number;
   name: string;
   destination: string;
   dates: string;
@@ -12,6 +14,7 @@ interface TravelerCardProps {
 }
 
 export const TravelerCard = ({
+  id,
   name,
   destination,
   dates,
@@ -20,8 +23,13 @@ export const TravelerCard = ({
   imageUrl,
   onConnect,
 }: TravelerCardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg">
+    <div 
+      className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg cursor-pointer"
+      onClick={() => navigate(`/traveler/${id}`)}
+    >
       <div className="relative h-48">
         <img
           src={imageUrl}
@@ -56,7 +64,10 @@ export const TravelerCard = ({
         
         <div className="flex gap-2">
           <Button 
-            onClick={onConnect}
+            onClick={(e) => {
+              e.stopPropagation();
+              onConnect();
+            }}
             className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
           >
             Connect
@@ -65,6 +76,10 @@ export const TravelerCard = ({
             variant="outline"
             size="icon"
             className="border-gray-200"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/messages');
+            }}
           >
             <MessageSquare className="w-4 h-4" />
           </Button>

@@ -8,6 +8,7 @@ import Search from "./pages/Search";
 import Orders from "./pages/Orders";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
+import Traveler from "./pages/Traveler";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/orders" element={<Orders />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/traveler/:id" element={<Traveler />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
