@@ -1,8 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { 
-  User, MapPin, Calendar, ShoppingBag, 
-  Star, ArrowLeft, MessageSquare, Share2 
-} from "lucide-react";
+import { ArrowLeft, Share2, Star, MapPin, Calendar, ShoppingBag, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { BottomNav } from "@/components/BottomNav";
@@ -51,6 +48,7 @@ const Traveler = () => {
             variant="ghost" 
             size="icon"
             onClick={() => navigate(-1)}
+            className="animate-fade-in"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -59,15 +57,16 @@ const Traveler = () => {
             variant="ghost"
             size="icon"
             onClick={handleShare}
+            className="animate-fade-in"
           >
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 max-w-3xl">
+      <main className="container mx-auto px-4 py-6 max-w-3xl animate-fade-in">
         {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6 animate-fade-in">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
           <div className="relative h-48">
             <img
               src={traveler.imageUrl}
@@ -84,22 +83,20 @@ const Traveler = () => {
             <h2 className="text-2xl font-bold mb-2">{traveler.name}</h2>
             <p className="text-gray-600 mb-4">{traveler.bio}</p>
             
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="space-y-3 mb-4">
               <div className="flex items-center gap-2 text-gray-600">
                 <MapPin className="w-4 h-4" />
                 <span>{traveler.destination}</span>
               </div>
+              
               <div className="flex items-center gap-2 text-gray-600">
                 <Calendar className="w-4 h-4" />
                 <span>{traveler.dates}</span>
               </div>
+              
               <div className="flex items-center gap-2 text-gray-600">
                 <ShoppingBag className="w-4 h-4" />
                 <span>{traveler.capacity}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <User className="w-4 h-4" />
-                <span>{traveler.languages.join(", ")}</span>
               </div>
             </div>
 
@@ -131,7 +128,7 @@ const Traveler = () => {
                 variant="outline"
                 size="icon"
                 className="border-gray-200"
-                onClick={() => navigate(`/messages`)}
+                onClick={() => navigate('/messages')}
               >
                 <MessageSquare className="w-4 h-4" />
               </Button>
