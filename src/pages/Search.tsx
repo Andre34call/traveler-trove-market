@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search as SearchIcon, MapPin, History, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { TravelerCard } from "@/components/TravelerCard";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,6 +14,30 @@ const Search = () => {
     "New York, USA"
   ]);
   const { toast } = useToast();
+  
+  // Mock data for travelers - in a real app, this would be filtered based on search
+  const travelers = [
+    {
+      id: 1,
+      name: "Sarah Johnson",
+      destination: "Tokyo, Japan",
+      dates: "May 15 - May 30",
+      capacity: "Up to 5kg available",
+      rating: 4.8,
+      imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+    },
+    {
+      id: 2,
+      name: "Michael Chen",
+      destination: "Paris, France",
+      dates: "June 1 - June 15",
+      capacity: "Up to 3kg available",
+      rating: 4.9,
+      imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    },
+  ];
+
+  const [filteredTravelers, setFilteredTravelers] = useState(travelers);
   
   const popularDestinations = [
     "Tokyo, Japan",
@@ -24,21 +49,42 @@ const Search = () => {
   ];
 
   const handleSearch = (query: string) => {
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      setFilteredTravelers(travelers);
+      return;
+    }
     
+    // Add to recent searches
     setRecentSearches(prev => {
       const updated = [query, ...prev.filter(s => s !== query)].slice(0, 5);
       return updated;
     });
     
+    // Filter travelers based on search query
+    const filtered = travelers.filter(traveler => 
+      traveler.destination.toLowerCase().includes(query.toLowerCase()) ||
+      traveler.name.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setFilteredTravelers(filtered);
+    
     toast({
-      title: "Searching...",
-      description: `Finding travelers in ${query}`,
+      title: filtered.length > 0 ? "Travelers Found" : "No Matches",
+      description: filtered.length > 0 
+        ? `Found ${filtered.length} travelers matching "${query}"`
+        : `No travelers found for "${query}". Try a different search.`,
     });
   };
 
   const clearRecentSearch = (search: string) => {
     setRecentSearches(prev => prev.filter(s => s !== search));
+  };
+
+  const handleConnect = (travelerId: number) => {
+    toast({
+      title: "Request Sent!",
+      description: "The traveler will be notified of your interest.",
+    });
   };
 
   return (
@@ -47,7 +93,7 @@ const Search = () => {
         <div className="flex gap-2">
           <Input
             type="text"
-            placeholder="Search destinations or items..."
+            placeholder="Search destinations or travelers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1"
@@ -55,6 +101,7 @@ const Search = () => {
           <Button 
             size="icon"
             onClick={() => handleSearch(searchQuery)}
+            className="bg-indigo-600 hover:bg-indigo-700"
           >
             <SearchIcon className="h-4 w-4" />
           </Button>
@@ -62,51 +109,109 @@ const Search = () => {
       </header>
 
       <main className="container mx-auto px-4 py-6 space-y-8">
-        {recentSearches.length > 0 && (
-          <section>
-            <h2 className="text-lg font-semibold mb-4">Recent Searches</h2>
-            <div className="space-y-2">
-              {recentSearches.map((search) => (
-                <div 
-                  key={search}
-                  className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm"
-                >
-                  <div className="flex items-center gap-2">
-                    <History className="h-4 w-4 text-gray-400" />
-                    <span>{search}</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => clearRecentSearch(search)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+        {searchQuery === "" && (
+          <>
+            {recentSearches.length > 0 && (
+              <section className="animate-fade-in">
+                <h2 className="text-lg font-semibold mb-4">Recent Searches</h2>
+                <div className="space-y-2">
+                  {recentSearches.map((search) => (
+                    <div 
+                      key={search}
+                      className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                      onClick={() => {
+                        setSearchQuery(search);
+                        handleSearch(search);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <History className="h-4 w-4 text-gray-400" />
+                        <span>{search}</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          clearRecentSearch(search);
+                        }}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
+              </section>
+            )}
+
+            <section className="animate-fade-in">
+              <h2 className="text-lg font-semibold mb-4">Popular Destinations</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {popularDestinations.map((destination) => (
+                  <Button
+                    key={destination}
+                    variant="outline"
+                    className="flex items-center justify-start gap-2 h-auto py-3"
+                    onClick={() => {
+                      setSearchQuery(destination);
+                      handleSearch(destination);
+                    }}
+                  >
+                    <MapPin className="h-4 w-4" />
+                    {destination}
+                  </Button>
+                ))}
+              </div>
+            </section>
+          </>
         )}
 
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Popular Destinations</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {popularDestinations.map((destination) => (
-              <Button
-                key={destination}
-                variant="outline"
-                className="flex items-center justify-start gap-2 h-auto py-3"
+        {searchQuery !== "" && (
+          <section className="animate-fade-in">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">
+                {filteredTravelers.length} Travelers Found
+              </h2>
+              <Button 
+                variant="ghost"
+                size="sm"
                 onClick={() => {
-                  setSearchQuery(destination);
-                  handleSearch(destination);
+                  setSearchQuery("");
+                  setFilteredTravelers(travelers);
                 }}
               >
-                <MapPin className="h-4 w-4" />
-                {destination}
+                Clear Search
               </Button>
-            ))}
-          </div>
-        </section>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTravelers.map((traveler) => (
+                <TravelerCard
+                  key={traveler.id}
+                  {...traveler}
+                  onConnect={() => handleConnect(traveler.id)}
+                />
+              ))}
+            </div>
+
+            {filteredTravelers.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">
+                  No travelers found matching your search.
+                </p>
+                <Button
+                  variant="link"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setFilteredTravelers(travelers);
+                  }}
+                >
+                  Clear search and show all travelers
+                </Button>
+              </div>
+            )}
+          </section>
+        )}
       </main>
       
       <BottomNav />
