@@ -15,7 +15,7 @@ const Search = () => {
   ]);
   const { toast } = useToast();
   
-  // Mock data for travelers - in a real app, this would be filtered based on search
+  // Updated mock data to include categories
   const travelers = [
     {
       id: 1,
@@ -25,6 +25,7 @@ const Search = () => {
       capacity: "Up to 5kg available",
       rating: 4.8,
       imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+      categories: ["Electronics", "Fashion", "Beauty"],
     },
     {
       id: 2,
@@ -34,6 +35,7 @@ const Search = () => {
       capacity: "Up to 3kg available",
       rating: 4.9,
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      categories: ["Fashion", "Luxury", "Accessories"],
     },
   ];
 
