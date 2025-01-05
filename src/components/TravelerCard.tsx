@@ -2,6 +2,7 @@ import { Star, MapPin, Calendar, ShoppingBag, MessageSquare, Tag } from "lucide-
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface TravelerCardProps {
   id: number;
@@ -27,6 +28,18 @@ export const TravelerCard = ({
   onConnect,
 }: TravelerCardProps) => {
   const navigate = useNavigate();
+  const [isConnected, setIsConnected] = useState(false);
+
+  const handleConnect = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsConnected(!isConnected);
+    onConnect();
+  };
+
+  const handleMessage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/messages/${id}`);
+  };
 
   return (
     <div 
@@ -82,22 +95,20 @@ export const TravelerCard = ({
         
         <div className="flex gap-2">
           <Button 
-            onClick={(e) => {
-              e.stopPropagation();
-              onConnect();
-            }}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={handleConnect}
+            className={`flex-1 ${
+              isConnected 
+                ? 'bg-gray-100 hover:bg-gray-200 text-gray-700' 
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            }`}
           >
-            Connect
+            {isConnected ? 'Unconnect' : 'Connect'}
           </Button>
           <Button 
             variant="outline"
             size="icon"
             className="border-gray-200"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate('/messages');
-            }}
+            onClick={handleMessage}
           >
             <MessageSquare className="w-4 h-4" />
           </Button>

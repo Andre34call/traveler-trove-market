@@ -9,6 +9,7 @@ import Orders from "./pages/Orders";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Traveler from "./pages/Traveler";
+import PrivateMessage from "./pages/PrivateMessage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/search" element={<Search />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/messages/:id" element={<PrivateMessage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/traveler/:id" element={<Traveler />} />
           <Route path="*" element={<Navigate to="/" replace />} />
