@@ -1,5 +1,6 @@
-import { Star, MapPin, Calendar, ShoppingBag, MessageSquare } from "lucide-react";
+import { Star, MapPin, Calendar, ShoppingBag, MessageSquare, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 
 interface TravelerCardProps {
@@ -10,6 +11,7 @@ interface TravelerCardProps {
   capacity: string;
   rating: number;
   imageUrl: string;
+  categories: string[];
   onConnect: () => void;
 }
 
@@ -21,6 +23,7 @@ export const TravelerCard = ({
   capacity,
   rating,
   imageUrl,
+  categories,
   onConnect,
 }: TravelerCardProps) => {
   const navigate = useNavigate();
@@ -59,6 +62,21 @@ export const TravelerCard = ({
           <div className="flex items-center gap-2 text-gray-600">
             <ShoppingBag className="w-4 h-4" />
             <span className="text-sm">{capacity}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Tag className="w-4 h-4 text-gray-600" />
+            <div className="flex flex-wrap gap-1">
+              {categories.map((category) => (
+                <Badge 
+                  key={category}
+                  variant="secondary" 
+                  className="text-xs bg-gray-100 text-gray-700"
+                >
+                  {category}
+                </Badge>
+              ))}
+            </div>
           </div>
         </div>
         

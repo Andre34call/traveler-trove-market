@@ -20,6 +20,7 @@ const Index = () => {
       capacity: "Up to 5kg available",
       rating: 4.8,
       imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+      categories: ["Electronics", "Fashion", "Beauty"],
     },
     {
       id: 2,
@@ -29,6 +30,7 @@ const Index = () => {
       capacity: "Up to 3kg available",
       rating: 4.9,
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      categories: ["Fashion", "Luxury", "Accessories"],
     },
     {
       id: 3,
@@ -38,6 +40,7 @@ const Index = () => {
       capacity: "Up to 2kg available",
       rating: 4.7,
       imageUrl: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
+      categories: ["Food", "Beauty", "Fashion"],
     },
   ];
 
