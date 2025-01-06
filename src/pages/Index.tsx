@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TravelerCard } from "@/components/TravelerCard";
-import { SearchFilters } from "@/components/SearchFilters";
+import { SearchFilters, FilterState } from "@/components/SearchFilters";
 import { BottomNav } from "@/components/BottomNav";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,11 @@ import {
 
 const Index = () => {
   const [showFilters, setShowFilters] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
+    destination: "",
+    date: "",
+    categories: [],
+  });
   const { toast } = useToast();
 
   const bannerSlides = [
@@ -79,6 +84,30 @@ const Index = () => {
     });
   };
 
+  const handleApplyFilters = (filters: FilterState) => {
+    setActiveFilters(filters);
+    toast({
+      title: "Filters Applied",
+      description: "The results have been updated based on your filters.",
+    });
+  };
+
+  const filteredTravelers = travelers.filter(traveler => {
+    const matchesDestination = !activeFilters.destination || 
+      traveler.destination.toLowerCase().includes(activeFilters.destination.toLowerCase());
+    
+    const matchesCategories = activeFilters.categories.length === 0 || 
+      activeFilters.categories.some(category => 
+        traveler.categories.includes(category)
+      );
+
+    // Simple date filter - you might want to implement more sophisticated date filtering
+    const matchesDate = !activeFilters.date || 
+      traveler.dates.includes(activeFilters.date);
+
+    return matchesDestination && matchesCategories && matchesDate;
+  });
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <header className="bg-white shadow-sm p-4 sticky top-0 z-10">
@@ -126,7 +155,7 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {travelers.map((traveler) => (
+          {filteredTravelers.map((traveler) => (
             <TravelerCard
               key={traveler.id}
               {...traveler}
@@ -144,7 +173,12 @@ const Index = () => {
         <Filter className="w-5 h-5" />
       </Button>
 
-      {showFilters && <SearchFilters />}
+      {showFilters && (
+        <SearchFilters 
+          onClose={() => setShowFilters(false)}
+          onApplyFilters={handleApplyFilters}
+        />
+      )}
       <BottomNav />
     </div>
   );

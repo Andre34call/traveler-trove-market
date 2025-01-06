@@ -3,8 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, MapPin, Tag, X } from "lucide-react";
 
-export const SearchFilters = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+interface SearchFiltersProps {
+  onClose: () => void;
+  onApplyFilters: (filters: FilterState) => void;
+}
+
+export interface FilterState {
+  destination: string;
+  date: string;
+  categories: string[];
+}
+
+export const SearchFilters = ({ onClose, onApplyFilters }: SearchFiltersProps) => {
+  const [destination, setDestination] = useState("");
+  const [date, setDate] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const popularDestinations = [
     "New York",
@@ -14,6 +27,29 @@ export const SearchFilters = () => {
     "Dubai",
   ];
 
+  const categories = ["Electronics", "Fashion", "Food", "Beauty", "Others"];
+
+  const handleDestinationClick = (dest: string) => {
+    setDestination(dest);
+  };
+
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(cat => cat !== category)
+        : [...prev, category]
+    );
+  };
+
+  const handleApplyFilters = () => {
+    onApplyFilters({
+      destination,
+      date,
+      categories: selectedCategories,
+    });
+    onClose();
+  };
+
   return (
     <div className="fixed bottom-20 left-0 right-0 z-10 bg-white shadow-lg rounded-t-xl transition-transform">
       <div className="p-4">
@@ -22,7 +58,7 @@ export const SearchFilters = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={onClose}
           >
             <X className="w-5 h-5" />
           </Button>
@@ -34,7 +70,12 @@ export const SearchFilters = () => {
               <MapPin className="w-4 h-4" />
               Destination
             </label>
-            <Input placeholder="Where to?" className="w-full" />
+            <Input 
+              placeholder="Where to?" 
+              className="w-full"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+            />
             
             <div className="mt-2 flex gap-2 overflow-x-auto pb-2">
               {popularDestinations.map((dest) => (
@@ -42,7 +83,10 @@ export const SearchFilters = () => {
                   key={dest}
                   variant="outline"
                   size="sm"
-                  className="whitespace-nowrap"
+                  className={`whitespace-nowrap ${
+                    destination === dest ? "bg-indigo-100 border-indigo-600" : ""
+                  }`}
+                  onClick={() => handleDestinationClick(dest)}
                 >
                   {dest}
                 </Button>
@@ -55,7 +99,12 @@ export const SearchFilters = () => {
               <Calendar className="w-4 h-4" />
               Travel Dates
             </label>
-            <Input type="date" className="w-full" />
+            <Input 
+              type="date" 
+              className="w-full"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
           </div>
 
           <div>
@@ -64,12 +113,15 @@ export const SearchFilters = () => {
               Item Categories
             </label>
             <div className="flex gap-2 flex-wrap">
-              {["Electronics", "Fashion", "Food", "Beauty", "Others"].map((cat) => (
+              {categories.map((cat) => (
                 <Button
                   key={cat}
                   variant="outline"
                   size="sm"
-                  className="whitespace-nowrap"
+                  className={`whitespace-nowrap ${
+                    selectedCategories.includes(cat) ? "bg-indigo-100 border-indigo-600" : ""
+                  }`}
+                  onClick={() => handleCategoryToggle(cat)}
                 >
                   {cat}
                 </Button>
@@ -77,7 +129,10 @@ export const SearchFilters = () => {
             </div>
           </div>
 
-          <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+          <Button 
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={handleApplyFilters}
+          >
             Apply Filters
           </Button>
         </div>
