@@ -10,6 +10,10 @@ import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Traveler from "./pages/Traveler";
 import PrivateMessage from "./pages/PrivateMessage";
+import AccountSettings from "./pages/AccountSettings";
+import PaymentMethods from "./pages/PaymentMethods";
+import Notifications from "./pages/Notifications";
+import HelpSupport from "./pages/HelpSupport";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +31,10 @@ const App = () => (
           <Route path="/messages/:id" element={<PrivateMessage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/traveler/:id" element={<Traveler />} />
+          <Route path="/account-settings" element={<AccountSettings />} />
+          <Route path="/payment-methods" element={<PaymentMethods />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/help-support" element={<HelpSupport />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

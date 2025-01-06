@@ -20,38 +20,44 @@ import {
   Moon,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { toast } = useToast();
   
-  const profileCompletion = 70; // Percentage of profile completion
+  const profileCompletion = 70;
   
   const menuItems = [
     {
       icon: User,
       title: "Account Settings",
       description: "Manage your personal information",
+      path: "/account-settings",
     },
     {
       icon: CreditCard,
       title: "Payment Methods",
       description: "Manage your payment options",
+      path: "/payment-methods",
     },
     {
       icon: Bell,
       title: "Notifications",
       description: "Configure your notification preferences",
+      path: "/notifications",
     },
     {
       icon: HelpCircle,
       title: "Help & Support",
       description: "Get help with your account",
+      path: "/help-support",
     },
     {
       icon: Lock,
       title: "Privacy & Security",
       description: "Manage your security settings",
+      path: "/privacy-security",
     },
   ];
 
@@ -61,13 +67,6 @@ const Profile = () => {
     toast({
       title: `${isDarkMode ? 'Light' : 'Dark'} Mode Activated`,
       description: `Switched to ${isDarkMode ? 'light' : 'dark'} mode`,
-    });
-  };
-
-  const handleMenuClick = (title: string) => {
-    toast({
-      title: title,
-      description: "This feature will be available soon!",
     });
   };
 
@@ -104,24 +103,22 @@ const Profile = () => {
           {menuItems.map((item) => {
             const Icon = item.icon;
             return (
-              <Card 
-                key={item.title} 
-                className="cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => handleMenuClick(item.title)}
-              >
-                <CardHeader className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <Icon className="h-5 w-5 text-gray-500" />
-                      <div>
-                        <CardTitle className="text-base">{item.title}</CardTitle>
-                        <CardDescription>{item.description}</CardDescription>
+              <Link key={item.title} to={item.path}>
+                <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
+                  <CardHeader className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <Icon className="h-5 w-5 text-gray-500" />
+                        <div>
+                          <CardTitle className="text-base">{item.title}</CardTitle>
+                          <CardDescription>{item.description}</CardDescription>
+                        </div>
                       </div>
+                      <ChevronRight className="h-5 w-5 text-gray-400" />
                     </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </CardHeader>
-              </Card>
+                  </CardHeader>
+                </Card>
+              </Link>
             );
           })}
           
