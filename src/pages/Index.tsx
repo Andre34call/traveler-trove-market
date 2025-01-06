@@ -5,10 +5,38 @@ import { BottomNav } from "@/components/BottomNav";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Index = () => {
   const [showFilters, setShowFilters] = useState(false);
   const { toast } = useToast();
+
+  const bannerSlides = [
+    {
+      id: 1,
+      imageUrl: "https://images.unsplash.com/photo-1517022812141-23620dba5c23",
+      title: "Explore Local Treasures",
+      description: "Connect with travelers and discover unique items worldwide",
+    },
+    {
+      id: 2,
+      imageUrl: "https://images.unsplash.com/photo-1469041797191-50ace28483c3",
+      title: "Shop Globally",
+      description: "Let travelers bring the world to your doorstep",
+    },
+    {
+      id: 3,
+      imageUrl: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d",
+      title: "Travel & Earn",
+      description: "Make extra money while traveling by helping others shop",
+    },
+  ];
 
   // Mock data for travelers
   const travelers = [
@@ -58,6 +86,45 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-6">
+        {/* Banner Carousel */}
+        <div className="mb-8 -mx-4 sm:mx-0">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {bannerSlides.map((slide) => (
+                <CarouselItem key={slide.id}>
+                  <div className="relative h-[200px] sm:h-[300px] w-full overflow-hidden rounded-lg">
+                    <img
+                      src={slide.imageUrl}
+                      alt={slide.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                      <div className="absolute bottom-0 left-0 p-6">
+                        <h2 className="text-white text-2xl font-bold mb-2">
+                          {slide.title}
+                        </h2>
+                        <p className="text-white/90 text-sm">
+                          {slide.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="hidden sm:block">
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+            </div>
+          </Carousel>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {travelers.map((traveler) => (
             <TravelerCard
