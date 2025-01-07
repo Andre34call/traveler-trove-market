@@ -14,6 +14,7 @@ import AccountSettings from "./pages/AccountSettings";
 import PaymentMethods from "./pages/PaymentMethods";
 import Notifications from "./pages/Notifications";
 import HelpSupport from "./pages/HelpSupport";
+import PrivacyAndSecurity from "./pages/PrivacyAndSecurity";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/payment-methods" element={<PaymentMethods />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/help-support" element={<HelpSupport />} />
+          <Route path="/privacy-security" element={<PrivacyAndSecurity />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
