@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { ArrowLeft, ChevronDown, ChevronUp, Search } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Accordion,
@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { BottomNav } from "@/components/BottomNav";
 
 const HelpSupport = () => {
   const { toast } = useToast();
@@ -52,7 +53,7 @@ const HelpSupport = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       <header className="fixed top-0 left-0 right-0 bg-background border-b z-10">
         <div className="flex items-center h-16 px-4">
           <Link to="/profile" className="mr-4">
@@ -62,7 +63,7 @@ const HelpSupport = () => {
         </div>
       </header>
 
-      <main className="container max-w-md mx-auto pt-20 pb-6 px-4">
+      <main className="container max-w-md mx-auto pt-20 pb-24 px-4">
         <div className="relative mb-6">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
@@ -93,6 +94,8 @@ const HelpSupport = () => {
           </Button>
         </div>
       </main>
+
+      <BottomNav />
     </div>
   );
 };
