@@ -21,7 +21,7 @@ interface ProfileMenuProps {
 
 const ProfileMenu = ({ menuItems }: ProfileMenuProps) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-24">
       {menuItems.map((item) => {
         const Icon = item.icon;
         return (

@@ -53,7 +53,7 @@ const HelpSupport = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16">
       <header className="fixed top-0 left-0 right-0 bg-background border-b z-10">
         <div className="flex items-center h-16 px-4">
           <Link to="/profile" className="mr-4">
@@ -63,7 +63,7 @@ const HelpSupport = () => {
         </div>
       </header>
 
-      <main className="container max-w-md mx-auto pt-20 pb-24 px-4">
+      <main className="container max-w-md mx-auto pt-20 px-4">
         <div className="relative mb-6">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
@@ -83,7 +83,7 @@ const HelpSupport = () => {
           ))}
         </Accordion>
 
-        <div className="space-y-4 mb-20">
+        <div className="space-y-4 mb-24">
           <h2 className="text-lg font-semibold">Still need help?</h2>
           <p className="text-muted-foreground">
             Our support team is available 24/7 to assist you with any questions or
