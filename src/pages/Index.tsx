@@ -2,8 +2,9 @@ import { useState } from "react";
 import { TravelerCard } from "@/components/TravelerCard";
 import { SearchFilters, FilterState } from "@/components/SearchFilters";
 import { BottomNav } from "@/components/BottomNav";
-import { Filter } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Carousel,
@@ -12,9 +13,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const Index = () => {
   const [showFilters, setShowFilters] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [activeFilters, setActiveFilters] = useState<FilterState>({
     destination: "",
     date: "",
@@ -93,6 +96,10 @@ const Index = () => {
   };
 
   const filteredTravelers = travelers.filter(traveler => {
+    const matchesSearch = searchQuery === "" ||
+      traveler.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      traveler.destination.toLowerCase().includes(searchQuery.toLowerCase());
+
     const matchesDestination = !activeFilters.destination || 
       traveler.destination.toLowerCase().includes(activeFilters.destination.toLowerCase());
     
@@ -101,17 +108,38 @@ const Index = () => {
         traveler.categories.includes(category)
       );
 
-    // Simple date filter - you might want to implement more sophisticated date filtering
     const matchesDate = !activeFilters.date || 
       traveler.dates.includes(activeFilters.date);
 
-    return matchesDestination && matchesCategories && matchesDate;
+    return matchesSearch && matchesDestination && matchesCategories && matchesDate;
   });
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <header className="bg-white shadow-sm p-4 sticky top-0 z-10">
-        <h1 className="text-2xl font-bold text-center">Travel Market</h1>
+      <header className="bg-white shadow-sm p-4 sticky top-0 z-50 animate-fade-in">
+        <div className="container mx-auto">
+          <h1 className="text-2xl font-bold text-center mb-4">Travel Market</h1>
+          <div className="flex gap-2 items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                type="text"
+                placeholder="Search destinations or travelers..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 w-full"
+              />
+            </div>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setShowFilters(!showFilters)}
+              className="shrink-0"
+            >
+              <Filter className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </header>
 
       <main className="container mx-auto px-4 py-6">
@@ -122,19 +150,24 @@ const Index = () => {
               align: "start",
               loop: true,
             }}
+            plugins={[
+              Autoplay({
+                delay: 5000,
+              }),
+            ]}
             className="w-full"
           >
             <CarouselContent>
-              {bannerSlides.map((slide) => (
+              {bannerSlides.map((slide, index) => (
                 <CarouselItem key={slide.id}>
-                  <div className="relative h-[200px] sm:h-[300px] w-full overflow-hidden rounded-lg">
+                  <div className="relative h-[200px] sm:h-[300px] w-full overflow-hidden rounded-lg transition-transform hover:scale-[1.02] duration-300">
                     <img
                       src={slide.imageUrl}
                       alt={slide.title}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                      <div className="absolute bottom-0 left-0 p-6">
+                      <div className="absolute bottom-0 left-0 p-6 animate-fade-in">
                         <h2 className="text-white text-2xl font-bold mb-2">
                           {slide.title}
                         </h2>
@@ -142,6 +175,11 @@ const Index = () => {
                           {slide.description}
                         </p>
                       </div>
+                    </div>
+                    <div className="absolute bottom-2 right-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                      <span className="text-white text-sm">
+                        {index + 1}/{bannerSlides.length}
+                      </span>
                     </div>
                   </div>
                 </CarouselItem>
@@ -164,14 +202,6 @@ const Index = () => {
           ))}
         </div>
       </main>
-
-      <Button
-        className="fixed right-4 bottom-24 bg-indigo-600 hover:bg-indigo-700 rounded-full shadow-lg"
-        size="icon"
-        onClick={() => setShowFilters(!showFilters)}
-      >
-        <Filter className="w-5 h-5" />
-      </Button>
 
       {showFilters && (
         <SearchFilters 
