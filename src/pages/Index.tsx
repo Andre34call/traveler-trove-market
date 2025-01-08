@@ -143,7 +143,6 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-6">
-        {/* Banner Carousel */}
         <div className="mb-8 -mx-4 sm:mx-0">
           <Carousel
             opts={{
