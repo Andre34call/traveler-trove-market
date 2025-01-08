@@ -7,6 +7,10 @@ import FavoriteTravelers from "@/components/profile/FavoriteTravelers";
 import RecentSearches from "@/components/profile/RecentSearches";
 import LanguageSettings from "@/components/profile/LanguageSettings";
 import TransactionHistory from "@/components/profile/TransactionHistory";
+import VerificationStatus from "@/components/profile/VerificationStatus";
+import PaymentSecurity from "@/components/profile/PaymentSecurity";
+import DisputeCenter from "@/components/profile/DisputeCenter";
+import InsuranceOptions from "@/components/profile/InsuranceOptions";
 import {
   User,
   CreditCard,
@@ -66,6 +70,10 @@ const Profile = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <VerificationStatus />
+          <PaymentSecurity />
+          <DisputeCenter />
+          <InsuranceOptions />
           <FavoriteTravelers />
           <RecentSearches />
           <LanguageSettings />
