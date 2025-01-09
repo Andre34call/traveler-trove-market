@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Package } from "lucide-react";
+import { Shield, Package, Gem } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const InsuranceOptions = () => {
@@ -28,6 +28,13 @@ const InsuranceOptions = () => {
           <div>
             <p className="font-medium">Package Protection</p>
             <p className="text-sm text-muted-foreground">Coverage up to $500</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Gem className="h-5 w-5 text-muted-foreground" />
+          <div>
+            <p className="font-medium">Valuable Items Protection</p>
+            <p className="text-sm text-muted-foreground">Coverage up to $2000</p>
           </div>
         </div>
         <Button onClick={handleInsuranceSetup} className="w-full">

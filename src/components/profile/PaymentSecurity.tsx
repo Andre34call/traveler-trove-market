@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Lock } from "lucide-react";
+import { CreditCard, Lock, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const PaymentSecurity = () => {
@@ -25,7 +25,17 @@ const PaymentSecurity = () => {
       <CardContent className="space-y-4">
         <div className="flex items-center gap-2">
           <CreditCard className="h-5 w-5 text-muted-foreground" />
-          <span>Enable secure payments with escrow service</span>
+          <div>
+            <p className="font-medium">Escrow Service</p>
+            <p className="text-sm text-muted-foreground">Secure payments with buyer protection</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Shield className="h-5 w-5 text-muted-foreground" />
+          <div>
+            <p className="font-medium">Fraud Protection</p>
+            <p className="text-sm text-muted-foreground">24/7 transaction monitoring</p>
+          </div>
         </div>
         <Button onClick={handleSecureSetup} className="w-full">
           Set Up Secure Payments
