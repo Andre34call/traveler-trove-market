@@ -3,14 +3,10 @@ import { BottomNav } from "@/components/BottomNav";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileMenu from "@/components/profile/ProfileMenu";
 import ThemeToggle from "@/components/ThemeToggle";
-import FavoriteTravelers from "@/components/profile/FavoriteTravelers";
-import RecentSearches from "@/components/profile/RecentSearches";
-import LanguageSettings from "@/components/profile/LanguageSettings";
-import TransactionHistory from "@/components/profile/TransactionHistory";
-import VerificationStatus from "@/components/profile/VerificationStatus";
-import PaymentSecurity from "@/components/profile/PaymentSecurity";
-import DisputeCenter from "@/components/profile/DisputeCenter";
-import InsuranceOptions from "@/components/profile/InsuranceOptions";
+import GroupShopping from "@/components/social/GroupShopping";
+import TravelCommunities from "@/components/social/TravelCommunities";
+import ShoppingGuides from "@/components/social/ShoppingGuides";
+import ReferralProgram from "@/components/social/ReferralProgram";
 import {
   User,
   CreditCard,
@@ -70,14 +66,10 @@ const Profile = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <VerificationStatus />
-          <PaymentSecurity />
-          <DisputeCenter />
-          <InsuranceOptions />
-          <FavoriteTravelers />
-          <RecentSearches />
-          <LanguageSettings />
-          <TransactionHistory />
+          <GroupShopping />
+          <TravelCommunities />
+          <ShoppingGuides />
+          <ReferralProgram />
         </div>
 
         <ProfileMenu menuItems={menuItems} />
