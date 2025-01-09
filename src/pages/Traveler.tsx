@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Calendar, ShoppingBag, MessageSquare } from "lucide-react";
+import { ArrowLeft, Star, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { BottomNav } from "@/components/BottomNav";
 import ShareProfile from "@/components/social/ShareProfile";
 import RatingAndReviews from "@/components/social/RatingAndReviews";
 import CommunityBadges from "@/components/social/CommunityBadges";
+import TravelerStats from "@/components/traveler/TravelerStats";
+import TravelerInfo from "@/components/traveler/TravelerInfo";
 
 const Traveler = () => {
   const { id } = useParams();
@@ -105,7 +107,6 @@ const Traveler = () => {
 
       <main className="container mx-auto px-4 py-6 max-w-3xl">
         <div className="bg-white rounded-lg shadow-md overflow-hidden space-y-6">
-          {/* Profile Header */}
           <div className="relative h-48">
             <img
               src={traveler.imageUrl}
@@ -119,48 +120,23 @@ const Traveler = () => {
           </div>
           
           <div className="p-4 space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-2">{traveler.name}</h2>
-              <p className="text-gray-600 mb-4">{traveler.bio}</p>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <MapPin className="w-4 h-4" />
-                  <span>{traveler.destination}</span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Calendar className="w-4 h-4" />
-                  <span>{traveler.dates}</span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-gray-600">
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>{traveler.capacity}</span>
-                </div>
-              </div>
-            </div>
+            <TravelerInfo
+              name={traveler.name}
+              destination={traveler.destination}
+              dates={traveler.dates}
+              capacity={traveler.capacity}
+              bio={traveler.bio}
+              languages={traveler.languages}
+            />
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="text-center">
-                <div className="font-semibold">{traveler.completedOrders}</div>
-                <div className="text-sm text-gray-600">Orders</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold">{traveler.responseRate}</div>
-                <div className="text-sm text-gray-600">Response Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold">{traveler.avgResponseTime}</div>
-                <div className="text-sm text-gray-600">Avg Response</div>
-              </div>
-            </div>
+            <TravelerStats
+              completedOrders={traveler.completedOrders}
+              responseRate={traveler.responseRate}
+              avgResponseTime={traveler.avgResponseTime}
+            />
 
-            {/* Community Badges */}
             <CommunityBadges badges={traveler.badges} />
 
-            {/* Ratings and Reviews */}
             <RatingAndReviews
               travelerId={traveler.id}
               averageRating={traveler.rating}
@@ -168,7 +144,6 @@ const Traveler = () => {
               reviews={traveler.reviews}
             />
 
-            {/* Action Buttons */}
             <div className="flex gap-2">
               <Button 
                 onClick={handleConnect}

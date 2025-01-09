@@ -1,4 +1,4 @@
-import { Twitter, Facebook, LinkedIn, Link as LinkIcon } from "lucide-react";
+import { Twitter, Facebook, Linkedin, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -64,7 +64,7 @@ const ShareProfile = ({ travelerId, travelerName }: ShareProfileProps) => {
         onClick={() => handleShare("linkedin")}
         className="hover:text-blue-700"
       >
-        <LinkedIn className="h-4 w-4" />
+        <Linkedin className="h-4 w-4" />
       </Button>
       <Button
         variant="outline"
