@@ -6,10 +6,31 @@ import { MessageHeader } from "@/components/messages/MessageHeader";
 import { QuickReplies } from "@/components/messages/QuickReplies";
 import { MessageInput } from "@/components/messages/MessageInput";
 
+interface Message {
+  id: number;
+  text: string;
+  sender: "user" | "other";
+  timestamp: string;
+}
+
 const PrivateMessage = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 1,
+      text: "Hi! I'm interested in your shopping service.",
+      sender: "user",
+      timestamp: "10:30 AM"
+    },
+    {
+      id: 2,
+      text: "Hello! I'd be happy to help. What items are you looking for?",
+      sender: "other",
+      timestamp: "10:31 AM"
+    }
+  ]);
 
   // Mock data - in a real app, this would come from an API
   const traveler = {
@@ -28,11 +49,20 @@ const PrivateMessage = () => {
 
   const handleSend = () => {
     if (message.trim()) {
+      const newMessage: Message = {
+        id: messages.length + 1,
+        text: message,
+        sender: "user",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      
+      setMessages([...messages, newMessage]);
+      setMessage("");
+      
       toast({
         title: "Message Sent",
         description: "Your message has been sent successfully.",
       });
-      setMessage("");
     }
   };
 
@@ -44,11 +74,29 @@ const PrivateMessage = () => {
         isOnline={traveler.isOnline}
       />
 
-      <main className="flex-1 p-4">
+      <main className="flex-1 p-4 overflow-y-auto">
         <div className="space-y-4 mb-20">
-          <div className="text-center text-gray-500 text-sm">
-            Start your conversation with {traveler.name}
-          </div>
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-[80%] rounded-lg p-3 ${
+                  msg.sender === "user"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-white border border-gray-200"
+                }`}
+              >
+                <p className="text-sm">{msg.text}</p>
+                <span className={`text-xs mt-1 block ${
+                  msg.sender === "user" ? "text-indigo-200" : "text-gray-500"
+                }`}>
+                  {msg.timestamp}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </main>
 

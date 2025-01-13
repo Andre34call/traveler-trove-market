@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BottomNav } from "@/components/BottomNav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Messages = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [conversations] = useState([
     {
@@ -51,6 +53,7 @@ const Messages = () => {
             <Card 
               key={conversation.id} 
               className="hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(`/messages/${conversation.id}`)}
             >
               <CardContent className="p-4">
                 <div className="flex items-center gap-4">
