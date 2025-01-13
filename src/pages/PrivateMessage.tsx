@@ -17,28 +17,54 @@ const PrivateMessage = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: "Hi! I'm interested in your shopping service.",
-      sender: "user",
-      timestamp: "10:30 AM"
-    },
-    {
-      id: 2,
-      text: "Hello! I'd be happy to help. What items are you looking for?",
-      sender: "other",
-      timestamp: "10:31 AM"
-    }
-  ]);
 
-  // Mock data - in a real app, this would come from an API
-  const traveler = {
-    id: 1,
-    name: "Sarah Johnson",
-    avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
-    isOnline: true,
+  // Mock data for different travelers
+  const travelers = {
+    "1": {
+      id: 1,
+      name: "Sarah Johnson",
+      avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+      isOnline: true,
+      messages: [
+        {
+          id: 1,
+          text: "Hi! I'm interested in your shopping service.",
+          sender: "user",
+          timestamp: "10:30 AM"
+        },
+        {
+          id: 2,
+          text: "Hello! I'd be happy to help. What items are you looking for?",
+          sender: "other",
+          timestamp: "10:31 AM"
+        }
+      ]
+    },
+    "2": {
+      id: 2,
+      name: "Michael Chen",
+      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      isOnline: false,
+      messages: [
+        {
+          id: 1,
+          text: "Hi Michael! Are you available for shopping assistance?",
+          sender: "user",
+          timestamp: "11:45 AM"
+        },
+        {
+          id: 2,
+          text: "Yes, I'm here to help! What do you need?",
+          sender: "other",
+          timestamp: "11:46 AM"
+        }
+      ]
+    }
   };
+
+  // Get the current traveler based on the ID
+  const currentTraveler = travelers[id as keyof typeof travelers] || travelers["1"];
+  const [messages, setMessages] = useState<Message[]>(currentTraveler.messages);
 
   const quickReplies = [
     "Hi, I'm interested in your shopping service!",
@@ -69,9 +95,9 @@ const PrivateMessage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <MessageHeader
-        name={traveler.name}
-        avatar={traveler.avatar}
-        isOnline={traveler.isOnline}
+        name={currentTraveler.name}
+        avatar={currentTraveler.avatar}
+        isOnline={currentTraveler.isOnline}
       />
 
       <main className="flex-1 p-4 overflow-y-auto">
