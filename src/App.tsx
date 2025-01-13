@@ -12,7 +12,7 @@ import PaymentMethods from "@/pages/PaymentMethods";
 import Notifications from "@/pages/Notifications";
 import PrivacyAndSecurity from "@/pages/PrivacyAndSecurity";
 import HelpSupport from "@/pages/HelpSupport";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "./components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
