@@ -1,35 +1,35 @@
-import { Home, Search, ShoppingBag, MessageCircle, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { Home, Search, ShoppingBag, MessageSquare, User, BarChart } from "lucide-react";
 
 export const BottomNav = () => {
   const location = useLocation();
-  
+  const currentPath = location.pathname;
+
   const navItems = [
-    { icon: Home, label: "Home", path: "/" },
-    { icon: Search, label: "Search", path: "/search" },
-    { icon: ShoppingBag, label: "Orders", path: "/orders" },
-    { icon: MessageCircle, label: "Messages", path: "/messages" },
-    { icon: User, label: "Profile", path: "/profile" },
+    { path: "/", icon: Home, label: "Home" },
+    { path: "/search", icon: Search, label: "Search" },
+    { path: "/orders", icon: ShoppingBag, label: "Orders" },
+    { path: "/messages", icon: MessageSquare, label: "Messages" },
+    { path: "/analytics", icon: BarChart, label: "Analytics" },
+    { path: "/profile", icon: User, label: "Profile" },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-      <div className="flex justify-around items-center h-16">
-        {navItems.map(({ icon: Icon, label, path }) => {
-          const isActive = location.pathname === path;
-          return (
+    <nav className="fixed bottom-0 left-0 right-0 bg-background border-t z-50">
+      <div className="container mx-auto">
+        <div className="flex justify-around items-center h-16">
+          {navItems.map(({ path, icon: Icon, label }) => (
             <Link
-              key={label}
+              key={path}
               to={path}
               className={`flex flex-col items-center justify-center flex-1 h-full
-                ${isActive ? "text-indigo-600" : "text-gray-500"}
-                hover:text-indigo-600 transition-colors`}
+                ${currentPath === path ? "text-primary" : "text-muted-foreground"}`}
             >
-              <Icon className="w-6 h-6" />
+              <Icon className="h-5 w-5" />
               <span className="text-xs mt-1">{label}</span>
             </Link>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </nav>
   );
