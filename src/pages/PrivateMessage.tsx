@@ -18,7 +18,7 @@ const PrivateMessage = () => {
   const { toast } = useToast();
   const [message, setMessage] = useState("");
 
-  // Mock data for different travelers
+  // Mock data for different travelers with consistent IDs
   const travelers = {
     "1": {
       id: 1,
@@ -59,11 +59,32 @@ const PrivateMessage = () => {
           timestamp: "11:46 AM"
         }
       ]
+    },
+    "3": {
+      id: 3,
+      name: "Emma Wilson",
+      avatar: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
+      isOnline: true,
+      messages: [
+        {
+          id: 1,
+          text: "Hi Emma! Can you help me find some local food items?",
+          sender: "user" as const,
+          timestamp: "09:15 AM"
+        },
+        {
+          id: 2,
+          text: "Of course! I know some great local specialty stores.",
+          sender: "other" as const,
+          timestamp: "09:16 AM"
+        }
+      ]
     }
   };
 
   // Get the current traveler based on the ID
   const currentTraveler = travelers[id as keyof typeof travelers] || travelers["1"];
+
   const [messages, setMessages] = useState<Message[]>(currentTraveler.messages);
 
   const quickReplies = [

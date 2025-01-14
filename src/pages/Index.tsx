@@ -46,7 +46,7 @@ const Index = () => {
     },
   ];
 
-  // Mock data for travelers
+  // Updated mock data for travelers with consistent IDs
   const travelers = [
     {
       id: 1,
