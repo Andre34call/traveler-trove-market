@@ -116,7 +116,7 @@ const PrivateMessage = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type your message..."
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-gray-50 focus:bg-white transition-colors"
             />
             <button onClick={handleSendMessage} className="mt-2 bg-indigo-600 text-white p-2 rounded">
               Send
