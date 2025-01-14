@@ -29,13 +29,13 @@ const PrivateMessage = () => {
         {
           id: 1,
           text: "Hi! I'm interested in your shopping service.",
-          sender: "user",
+          sender: "user" as const,
           timestamp: "10:30 AM"
         },
         {
           id: 2,
           text: "Hello! I'd be happy to help. What items are you looking for?",
-          sender: "other",
+          sender: "other" as const,
           timestamp: "10:31 AM"
         }
       ]
@@ -49,13 +49,13 @@ const PrivateMessage = () => {
         {
           id: 1,
           text: "Hi Michael! Are you available for shopping assistance?",
-          sender: "user",
+          sender: "user" as const,
           timestamp: "11:45 AM"
         },
         {
           id: 2,
           text: "Yes, I'm here to help! What do you need?",
-          sender: "other",
+          sender: "other" as const,
           timestamp: "11:46 AM"
         }
       ]
