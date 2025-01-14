@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { TravelerCard } from "@/components/TravelerCard";
 import { SearchFilters, FilterState } from "@/components/SearchFilters";
 import { BottomNav } from "@/components/BottomNav";
 import { Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import { BannerCarousel } from "@/components/home/BannerCarousel";
+import { TravelerList, Traveler } from "@/components/home/TravelerList";
 
 const Index = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -23,7 +15,6 @@ const Index = () => {
     date: "",
     categories: [],
   });
-  const { toast } = useToast();
 
   const bannerSlides = [
     {
@@ -46,8 +37,7 @@ const Index = () => {
     },
   ];
 
-  // Updated mock data for travelers with consistent IDs
-  const travelers = [
+  const travelers: Traveler[] = [
     {
       id: 1,
       name: "Sarah Johnson",
@@ -80,19 +70,8 @@ const Index = () => {
     },
   ];
 
-  const handleConnect = (travelerId: number) => {
-    toast({
-      title: "Request Sent!",
-      description: "The traveler will be notified of your interest.",
-    });
-  };
-
   const handleApplyFilters = (filters: FilterState) => {
     setActiveFilters(filters);
-    toast({
-      title: "Filters Applied",
-      description: "The results have been updated based on your filters.",
-    });
   };
 
   const filteredTravelers = travelers.filter(traveler => {
@@ -143,63 +122,8 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-6">
-        <div className="mb-8 -mx-4 sm:mx-0">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 5000,
-              }),
-            ]}
-            className="w-full"
-          >
-            <CarouselContent>
-              {bannerSlides.map((slide, index) => (
-                <CarouselItem key={slide.id}>
-                  <div className="relative h-[200px] sm:h-[300px] w-full overflow-hidden rounded-lg transition-transform hover:scale-[1.02] duration-300">
-                    <img
-                      src={slide.imageUrl}
-                      alt={slide.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                      <div className="absolute bottom-0 left-0 p-6 animate-fade-in">
-                        <h2 className="text-white text-2xl font-bold mb-2">
-                          {slide.title}
-                        </h2>
-                        <p className="text-white/90 text-sm">
-                          {slide.description}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
-                      <span className="text-white text-sm">
-                        {index + 1}/{bannerSlides.length}
-                      </span>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="hidden sm:block">
-              <CarouselPrevious className="left-4" />
-              <CarouselNext className="right-4" />
-            </div>
-          </Carousel>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTravelers.map((traveler) => (
-            <TravelerCard
-              key={traveler.id}
-              {...traveler}
-              onConnect={() => handleConnect(traveler.id)}
-            />
-          ))}
-        </div>
+        <BannerCarousel slides={bannerSlides} />
+        <TravelerList travelers={filteredTravelers} />
       </main>
 
       {showFilters && (

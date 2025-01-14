@@ -1,20 +1,10 @@
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { BottomNav } from "@/components/BottomNav";
-import { useToast } from "@/hooks/use-toast";
-import { MessageHeader } from "@/components/messages/MessageHeader";
-import { QuickReplies } from "@/components/messages/QuickReplies";
-import { MessageInput } from "@/components/messages/MessageInput";
-
-interface Message {
-  id: number;
-  text: string;
-  sender: "user" | "other";
-  timestamp: string;
-}
+import { useToast } from "@/components/ui/use-toast";
 
 const PrivateMessage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [message, setMessage] = useState("");
 
@@ -28,15 +18,15 @@ const PrivateMessage = () => {
       messages: [
         {
           id: 1,
-          text: "Hi! I'm interested in your shopping service.",
+          text: "Hi! I'm interested in getting some Japanese electronics.",
           sender: "user" as const,
-          timestamp: "10:30 AM"
+          timestamp: "11:45 AM"
         },
         {
           id: 2,
-          text: "Hello! I'd be happy to help. What items are you looking for?",
+          text: "I'd be happy to help! What specific items are you looking for?",
           sender: "other" as const,
-          timestamp: "10:31 AM"
+          timestamp: "11:46 AM"
         }
       ]
     },
@@ -48,15 +38,15 @@ const PrivateMessage = () => {
       messages: [
         {
           id: 1,
-          text: "Hi Michael! Are you available for shopping assistance?",
+          text: "Hello Michael! Can you help me find some luxury items in Paris?",
           sender: "user" as const,
-          timestamp: "11:45 AM"
+          timestamp: "10:30 AM"
         },
         {
           id: 2,
-          text: "Yes, I'm here to help! What do you need?",
+          text: "Of course! I know all the best boutiques in Paris.",
           sender: "other" as const,
-          timestamp: "11:46 AM"
+          timestamp: "10:35 AM"
         }
       ]
     },
@@ -82,86 +72,58 @@ const PrivateMessage = () => {
     }
   };
 
-  // Get the current traveler based on the ID
-  const currentTraveler = travelers[id as keyof typeof travelers] || travelers["1"];
+  const traveler = travelers[id as keyof typeof travelers];
 
-  const [messages, setMessages] = useState<Message[]>(currentTraveler.messages);
-
-  const quickReplies = [
-    "Hi, I'm interested in your shopping service!",
-    "What items can you help me purchase?",
-    "When will you be traveling?",
-    "What's your buying fee?",
-  ];
-
-  const handleSend = () => {
+  const handleSendMessage = () => {
     if (message.trim()) {
-      const newMessage: Message = {
-        id: messages.length + 1,
-        text: message,
-        sender: "user",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      
-      setMessages([...messages, newMessage]);
-      setMessage("");
-      
+      // Logic to send the message
       toast({
-        title: "Message Sent",
-        description: "Your message has been sent successfully.",
+        title: "Message Sent!",
+        description: `Your message to ${traveler.name} has been sent.`,
       });
+      setMessage("");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <MessageHeader
-        name={currentTraveler.name}
-        avatar={currentTraveler.avatar}
-        isOnline={currentTraveler.isOnline}
-      />
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <header className="bg-white shadow-sm p-4 sticky top-0 z-10">
+        <div className="flex items-center justify-between max-w-3xl mx-auto">
+          <button onClick={() => navigate(-1)} className="text-gray-500">
+            Back
+          </button>
+          <h1 className="text-xl font-semibold">{traveler.name}</h1>
+          <div className="flex items-center">
+            <img src={traveler.avatar} alt={traveler.name} className="w-8 h-8 rounded-full" />
+            {traveler.isOnline && <span className="text-green-500 text-sm ml-2">Online</span>}
+          </div>
+        </div>
+      </header>
 
-      <main className="flex-1 p-4 overflow-y-auto">
-        <div className="space-y-4 mb-20">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[80%] rounded-lg p-3 ${
-                  msg.sender === "user"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-white border border-gray-200"
-                }`}
-              >
-                <p className="text-sm">{msg.text}</p>
-                <span className={`text-xs mt-1 block ${
-                  msg.sender === "user" ? "text-indigo-200" : "text-gray-500"
-                }`}>
-                  {msg.timestamp}
-                </span>
+      <main className="container mx-auto px-4 py-6 max-w-3xl">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden space-y-6">
+          <div className="p-4">
+            {traveler.messages.map((msg) => (
+              <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+                <div className={`p-2 rounded-lg ${msg.sender === "user" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-800"}`}>
+                  {msg.text}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="p-4 border-t">
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="w-full p-2 border rounded"
+            />
+            <button onClick={handleSendMessage} className="mt-2 bg-indigo-600 text-white p-2 rounded">
+              Send
+            </button>
+          </div>
         </div>
       </main>
-
-      <div className="fixed bottom-20 left-0 right-0 bg-white border-t border-gray-100 p-4">
-        <div className="container mx-auto">
-          <QuickReplies
-            replies={quickReplies}
-            onReplyClick={setMessage}
-          />
-          <MessageInput
-            message={message}
-            onChange={setMessage}
-            onSend={handleSend}
-          />
-        </div>
-      </div>
-
-      <BottomNav />
     </div>
   );
 };
