@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BannerCarousel } from "@/components/home/BannerCarousel";
 import { TravelerList, Traveler } from "@/components/home/TravelerList";
+import { AddTravelOfferFAB } from "@/components/home/AddTravelOfferFAB";
 
 const Index = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -132,6 +133,7 @@ const Index = () => {
           onApplyFilters={handleApplyFilters}
         />
       )}
+      <AddTravelOfferFAB />
       <BottomNav />
     </div>
   );
