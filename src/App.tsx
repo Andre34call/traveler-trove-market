@@ -13,6 +13,7 @@ import Notifications from "@/pages/Notifications";
 import PrivacyAndSecurity from "@/pages/PrivacyAndSecurity";
 import HelpSupport from "@/pages/HelpSupport";
 import AddTravelOffer from "@/pages/AddTravelOffer";
+import Group from "@/pages/Group";
 import { ThemeProvider } from "./components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/privacy-security" element={<PrivacyAndSecurity />} />
           <Route path="/help-support" element={<HelpSupport />} />
           <Route path="/add-travel-offer" element={<AddTravelOffer />} />
+          <Route path="/group/:id" element={<Group />} />
         </Routes>
         <Toaster />
       </Router>
