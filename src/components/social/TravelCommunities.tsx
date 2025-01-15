@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MapPin, Users } from "lucide-react";
+import { MapPin, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Community {
   id: number;
@@ -15,6 +16,7 @@ interface Community {
 
 const TravelCommunities = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [communities, setCommunities] = useState<Community[]>([
     {
       id: 1,
@@ -32,7 +34,8 @@ const TravelCommunities = () => {
     }
   ]);
 
-  const handleJoinCommunity = (id: number) => {
+  const handleJoinCommunity = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation(); // Prevent navigation when clicking the join button
     setCommunities(communities.map(community => {
       if (community.id === id) {
         const newStatus = !community.isJoined;
@@ -44,6 +47,10 @@ const TravelCommunities = () => {
       }
       return community;
     }));
+  };
+
+  const handleCommunityClick = (id: number) => {
+    navigate(`/community/${id}`);
   };
 
   return (
@@ -58,19 +65,29 @@ const TravelCommunities = () => {
       <ScrollArea className="h-[250px] px-4 pb-4">
         <div className="space-y-4">
           {communities.map((community) => (
-            <div key={community.id} className="p-3 border rounded-lg">
+            <div
+              key={community.id}
+              onClick={() => handleCommunityClick(community.id)}
+              className="p-4 border rounded-lg transition-all hover:border-primary/50 hover:bg-accent/50 cursor-pointer group relative"
+            >
               <div className="flex items-center justify-between mb-2">
-                <h4 className="font-medium">{community.destination}</h4>
-                <Button 
-                  variant={community.isJoined ? "outline" : "default"}
-                  size="sm"
-                  onClick={() => handleJoinCommunity(community.id)}
-                >
-                  {community.isJoined ? 'Leave' : 'Join'}
-                </Button>
+                <h4 className="font-medium group-hover:text-primary transition-colors">
+                  {community.destination}
+                </h4>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant={community.isJoined ? "outline" : "default"}
+                    size="sm"
+                    onClick={(e) => handleJoinCommunity(e, community.id)}
+                    className="relative z-10"
+                  >
+                    {community.isJoined ? 'Leave' : 'Join'}
+                  </Button>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">{community.description}</p>
-              <div className="flex items-center gap-2 mt-2">
+              <p className="text-sm text-muted-foreground mb-2">{community.description}</p>
+              <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">{community.members} members</span>
               </div>
