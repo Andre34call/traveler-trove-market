@@ -1,45 +1,35 @@
-import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Users, ShoppingBag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { Users, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-interface GroupRequest {
+interface ShoppingGroup {
   id: number;
-  destination: string;
-  category: string;
+  name: string;
   members: number;
-  maxMembers: number;
-  deadline: string;
+  description: string;
 }
 
 const GroupShopping = () => {
-  const { toast } = useToast();
-  const [requests] = useState<GroupRequest[]>([
+  const navigate = useNavigate();
+  
+  const groups: ShoppingGroup[] = [
     {
       id: 1,
-      destination: "Tokyo, Japan",
-      category: "Electronics",
-      members: 3,
-      maxMembers: 5,
-      deadline: "2024-04-15"
+      name: "Tokyo Electronics",
+      members: 8,
+      description: "Group shopping for electronics in Tokyo"
     },
     {
       id: 2,
-      destination: "Seoul, Korea",
-      category: "Fashion",
-      members: 2,
-      maxMembers: 4,
-      deadline: "2024-04-20"
+      name: "Seoul Fashion",
+      members: 12,
+      description: "Korean fashion and beauty products"
     }
-  ]);
+  ];
 
-  const handleJoinGroup = (id: number) => {
-    toast({
-      title: "Request Sent",
-      description: "Your request to join the group has been sent.",
-    });
+  const handleGroupClick = (groupId: number) => {
+    navigate(`/group/${groupId}`);
   };
 
   return (
@@ -49,30 +39,30 @@ const GroupShopping = () => {
           <Users className="h-5 w-5 text-muted-foreground" />
           <CardTitle className="text-lg">Group Shopping</CardTitle>
         </div>
-        <CardDescription>Join others for group purchases</CardDescription>
+        <CardDescription>Join shopping groups with other travelers</CardDescription>
       </CardHeader>
-      <ScrollArea className="h-[250px] px-4 pb-4">
-        <div className="space-y-4">
-          {requests.map((request) => (
-            <div key={request.id} className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <h4 className="font-medium">{request.destination}</h4>
-                <p className="text-sm text-muted-foreground">{request.category}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{request.members}/{request.maxMembers} members</span>
-                </div>
+      <ScrollArea className="h-[250px]">
+        <CardContent className="space-y-4">
+          {groups.map((group) => (
+            <div
+              key={group.id}
+              onClick={() => handleGroupClick(group.id)}
+              className="p-4 border rounded-lg transition-all hover:border-primary/50 hover:bg-accent/50 cursor-pointer group"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-medium group-hover:text-primary transition-colors">
+                  {group.name}
+                </h4>
+                <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => handleJoinGroup(request.id)}
-              >
-                Join Group
-              </Button>
+              <p className="text-sm text-muted-foreground mb-2">{group.description}</p>
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">{group.members} members</span>
+              </div>
             </div>
           ))}
-        </div>
+        </CardContent>
       </ScrollArea>
     </Card>
   );
