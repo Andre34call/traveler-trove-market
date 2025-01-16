@@ -10,6 +10,10 @@ export interface Traveler {
   rating: number;
   imageUrl: string;
   categories: string[];
+  isVerified?: boolean;
+  compatibilityScore?: number;
+  priceRangeMin?: number;
+  priceRangeMax?: number;
 }
 
 interface TravelerListProps {

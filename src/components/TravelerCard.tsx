@@ -1,8 +1,9 @@
-import { Star, MapPin, Calendar, ShoppingBag, MessageSquare, Tag } from "lucide-react";
+import { Star, MapPin, Calendar, ShoppingBag, MessageSquare, Tag, Shield, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface TravelerCardProps {
   id: number;
@@ -13,6 +14,10 @@ interface TravelerCardProps {
   rating: number;
   imageUrl: string;
   categories: string[];
+  isVerified?: boolean;
+  compatibilityScore?: number;
+  priceRangeMin?: number;
+  priceRangeMax?: number;
   onConnect: () => void;
 }
 
@@ -25,6 +30,10 @@ export const TravelerCard = ({
   rating,
   imageUrl,
   categories,
+  isVerified = false,
+  compatibilityScore,
+  priceRangeMin,
+  priceRangeMax,
   onConnect,
 }: TravelerCardProps) => {
   const navigate = useNavigate();
@@ -56,6 +65,23 @@ export const TravelerCard = ({
           <Star className="w-4 h-4 text-yellow-400" />
           <span className="text-sm font-medium">{rating}</span>
         </div>
+        {isVerified && (
+          <div className="absolute top-2 left-2 bg-white px-2 py-1 rounded-full flex items-center gap-1">
+            <Shield className="w-4 h-4 text-green-500" />
+            <span className="text-sm font-medium">Verified</span>
+          </div>
+        )}
+        {compatibilityScore !== undefined && (
+          <div className="absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full flex items-center gap-1">
+            <Heart className={cn(
+              "w-4 h-4",
+              compatibilityScore >= 75 ? "text-red-500" :
+              compatibilityScore >= 50 ? "text-orange-500" :
+              "text-gray-500"
+            )} />
+            <span className="text-sm font-medium">{Math.round(compatibilityScore)}% Match</span>
+          </div>
+        )}
       </div>
       
       <div className="p-4">
@@ -76,6 +102,14 @@ export const TravelerCard = ({
             <ShoppingBag className="w-4 h-4" />
             <span className="text-sm">{capacity}</span>
           </div>
+
+          {priceRangeMin !== undefined && priceRangeMax !== undefined && (
+            <div className="flex items-center gap-2 text-gray-600">
+              <span className="text-sm font-medium">
+                Price Range: ${priceRangeMin.toFixed(2)} - ${priceRangeMax.toFixed(2)}
+              </span>
+            </div>
+          )}
 
           <div className="flex items-center gap-2">
             <Tag className="w-4 h-4 text-gray-600" />

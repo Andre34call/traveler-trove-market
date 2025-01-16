@@ -113,34 +113,43 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           capacity: string | null
+          compatibility_score: number | null
           created_at: string
           destination: string | null
           full_name: string | null
           id: string
+          is_verified: boolean | null
           languages: string[] | null
           username: string
+          verification_date: string | null
         }
         Insert: {
           avatar_url?: string | null
           bio?: string | null
           capacity?: string | null
+          compatibility_score?: number | null
           created_at?: string
           destination?: string | null
           full_name?: string | null
           id: string
+          is_verified?: boolean | null
           languages?: string[] | null
           username: string
+          verification_date?: string | null
         }
         Update: {
           avatar_url?: string | null
           bio?: string | null
           capacity?: string | null
+          compatibility_score?: number | null
           created_at?: string
           destination?: string | null
           full_name?: string | null
           id?: string
+          is_verified?: boolean | null
           languages?: string[] | null
           username?: string
+          verification_date?: string | null
         }
         Relationships: []
       }
@@ -189,6 +198,50 @@ export type Database = {
           },
         ]
       }
+      saved_filters: {
+        Row: {
+          categories: string[] | null
+          created_at: string
+          date_range: unknown | null
+          destination: string | null
+          id: string
+          name: string
+          price_max: number | null
+          price_min: number | null
+          profile_id: string | null
+        }
+        Insert: {
+          categories?: string[] | null
+          created_at?: string
+          date_range?: unknown | null
+          destination?: string | null
+          id?: string
+          name: string
+          price_max?: number | null
+          price_min?: number | null
+          profile_id?: string | null
+        }
+        Update: {
+          categories?: string[] | null
+          created_at?: string
+          date_range?: unknown | null
+          destination?: string | null
+          id?: string
+          name?: string
+          price_max?: number | null
+          price_min?: number | null
+          profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_filters_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       travel_offers: {
         Row: {
           capacity: string
@@ -198,6 +251,8 @@ export type Database = {
           destination: string
           end_date: string
           id: string
+          price_range_max: number | null
+          price_range_min: number | null
           start_date: string
           status: string | null
           traveler_id: string
@@ -210,6 +265,8 @@ export type Database = {
           destination: string
           end_date: string
           id?: string
+          price_range_max?: number | null
+          price_range_min?: number | null
           start_date: string
           status?: string | null
           traveler_id: string
@@ -222,6 +279,8 @@ export type Database = {
           destination?: string
           end_date?: string
           id?: string
+          price_range_max?: number | null
+          price_range_min?: number | null
           start_date?: string
           status?: string | null
           traveler_id?: string
