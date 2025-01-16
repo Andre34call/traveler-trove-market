@@ -27,13 +27,6 @@ const Messages = () => {
     }
   ]);
 
-  const quickReplies = [
-    "Thank you!",
-    "Sounds good",
-    "When will it be ready?",
-    "Could you share more details?"
-  ];
-
   const handleQuickReply = (reply: string) => {
     toast({
       title: "Message Sent",
@@ -81,20 +74,6 @@ const Messages = () => {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        <div className="fixed bottom-20 left-0 right-0 bg-white border-t border-gray-100 p-4">
-          <div className="container mx-auto flex gap-2 overflow-x-auto pb-2">
-            {quickReplies.map((reply) => (
-              <button
-                key={reply}
-                onClick={() => handleQuickReply(reply)}
-                className="whitespace-nowrap px-4 py-2 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition-colors"
-              >
-                {reply}
-              </button>
-            ))}
-          </div>
         </div>
       </main>
       
