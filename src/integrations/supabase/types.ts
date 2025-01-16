@@ -9,7 +9,233 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      communities: {
+        Row: {
+          created_at: string
+          description: string | null
+          destination: string
+          id: string
+          member_count: number | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          destination: string
+          id?: string
+          member_count?: number | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          destination?: string
+          id?: string
+          member_count?: number | null
+          name?: string
+        }
+        Relationships: []
+      }
+      community_members: {
+        Row: {
+          community_id: string
+          joined_at: string
+          profile_id: string
+        }
+        Insert: {
+          community_id: string
+          joined_at?: string
+          profile_id: string
+        }
+        Update: {
+          community_id?: string
+          joined_at?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_members_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_members_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          receiver_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          capacity: string | null
+          created_at: string
+          destination: string | null
+          full_name: string | null
+          id: string
+          languages: string[] | null
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          capacity?: string | null
+          created_at?: string
+          destination?: string | null
+          full_name?: string | null
+          id: string
+          languages?: string[] | null
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          capacity?: string | null
+          created_at?: string
+          destination?: string | null
+          full_name?: string | null
+          id?: string
+          languages?: string[] | null
+          username?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          likes: number | null
+          rating: number
+          reviewer_id: string
+          traveler_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          likes?: number | null
+          rating: number
+          reviewer_id: string
+          traveler_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          likes?: number | null
+          rating?: number
+          reviewer_id?: string
+          traveler_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_traveler_id_fkey"
+            columns: ["traveler_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      travel_offers: {
+        Row: {
+          capacity: string
+          categories: string[]
+          created_at: string
+          description: string | null
+          destination: string
+          end_date: string
+          id: string
+          start_date: string
+          status: string | null
+          traveler_id: string
+        }
+        Insert: {
+          capacity: string
+          categories: string[]
+          created_at?: string
+          description?: string | null
+          destination: string
+          end_date: string
+          id?: string
+          start_date: string
+          status?: string | null
+          traveler_id: string
+        }
+        Update: {
+          capacity?: string
+          categories?: string[]
+          created_at?: string
+          description?: string | null
+          destination?: string
+          end_date?: string
+          id?: string
+          start_date?: string
+          status?: string | null
+          traveler_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "travel_offers_traveler_id_fkey"
+            columns: ["traveler_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
